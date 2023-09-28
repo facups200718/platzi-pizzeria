@@ -1,5 +1,6 @@
 package com.platzi.platzipizzeria.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,10 +35,13 @@ public class OrderEntity {
     @Column(name = "additional_notes", length = 200)
     private String additionalNotes;
 
-    @OneToOne
+    // @JsonIgnore también puede servir para no traer info que no es de nuestro interés.
+    // Un ejemplo que viene al caso, para qué queremos toda la info del customer si ya tenemos el id?
+    @OneToOne(fetch = FetchType.LAZY) // Con esto indicamos que no se recupere la info en este caso, lo cual sería aún más eficiente que el @JsonIgnore.
+    @JsonIgnore
     @JoinColumn(name = "id_customer", referencedColumnName = "id_customer", insertable = false, updatable = false)
     private CustomerEntity customer;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER) // Con EAGER indicamos que SÍ queremos que se recupere la info. y que se muestre.
     private List<OrderItemEntity> items;
 }

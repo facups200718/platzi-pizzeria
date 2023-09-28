@@ -2,8 +2,7 @@ package com.platzi.platzipizzeria.web.controller;
 
 import com.platzi.platzipizzeria.persistence.entity.PizzaEntity;
 import com.platzi.platzipizzeria.service.PizzaService;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,13 +10,9 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/pizzas")
+@RequiredArgsConstructor
 public class PizzaController {
     private final PizzaService pizzaService;
-
-    @Autowired
-    public PizzaController(PizzaService pizzaService) {
-        this.pizzaService = pizzaService;
-    }
 
     @GetMapping
     public ResponseEntity<List<PizzaEntity>> getAll() {
