@@ -3,6 +3,7 @@ package com.platzi.platzipizzeria.web.controller;
 import com.platzi.platzipizzeria.persistence.entity.PizzaEntity;
 import com.platzi.platzipizzeria.service.PizzaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,8 @@ public class PizzaController {
     private final PizzaService pizzaService;
 
     @GetMapping
-    public ResponseEntity<List<PizzaEntity>> getAll() {
-        return ResponseEntity.ok(this.pizzaService.getAll());
+    public ResponseEntity<Page<PizzaEntity>> getAll(@RequestParam int page, @RequestParam int elements) {
+        return ResponseEntity.ok(this.pizzaService.getAll(page, elements));
     }
 
     @GetMapping("/available")

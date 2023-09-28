@@ -1,18 +1,25 @@
 package com.platzi.platzipizzeria.service;
 
 import com.platzi.platzipizzeria.persistence.entity.PizzaEntity;
+import com.platzi.platzipizzeria.persistence.repository.PizzaPageSortingRepository;
 import com.platzi.platzipizzeria.persistence.repository.PizzaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import org.springframework.data.domain.Pageable;
 import java.util.*;
 
 @RequiredArgsConstructor
 @Service
 public class PizzaService {
     private final PizzaRepository pizzaRepository;
+    private final PizzaPageSortingRepository pizzaPageSortingRepository;
 
-    public List<PizzaEntity> getAll() {
-        return this.pizzaRepository.findAll();
+    public Page<PizzaEntity> getAll(int page, int elements) {
+        Pageable pageRequest = PageRequest.of(page, elements);
+        return this.pizzaPageSortingRepository.findAll(pageRequest);
     }
 
     public List<PizzaEntity> getAvailable() {
