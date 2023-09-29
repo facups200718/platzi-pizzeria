@@ -1,6 +1,8 @@
 
 package com.platzi.platzipizzeria.persistence.entity;
 
+import com.platzi.platzipizzeria.persistence.audit.AuditPizzaListener;
+import com.platzi.platzipizzeria.persistence.audit.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,14 +10,18 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
+
 
 @Entity
 @Table(name = "pizza")
 @Getter
 @Setter
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
-public class PizzaEntity extends AuditableEntity {
+// Son los distintos listeners que triggerean métodos que hacen cosas de auditoría
+// Tenemos uno por default y el que creamos nosotros en este caso
+@EntityListeners({AuditingEntityListener.class, AuditPizzaListener.class})
+public class PizzaEntity extends AuditableEntity implements Serializable {
     @Id
     @Column(name = "id_pizza", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,4 +54,17 @@ public class PizzaEntity extends AuditableEntity {
     @Column(name = "modified_date")
     @LastModifiedDate
     private LocalDateTime modifiedDate;*/
+
+    @Override
+    public String toString() {
+        return "PizzaEntity{" +
+                "idPizza=" + idPizza +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", vegetarian=" + vegetarian +
+                ", vegan=" + vegan +
+                ", available=" + available +
+                '}';
+    }
 }
