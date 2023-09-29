@@ -43,5 +43,6 @@ public class OrderEntity {
     private CustomerEntity customer;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER) // Con EAGER indicamos que SÍ queremos que se recupere la info. y que se muestre.
+    @OrderBy("price DESC")
     private List<OrderItemEntity> items;
 }
