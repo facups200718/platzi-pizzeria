@@ -1,6 +1,7 @@
 package com.platzi.platzipizzeria.web.controller;
 
 import com.platzi.platzipizzeria.persistence.entity.OrderEntity;
+import com.platzi.platzipizzeria.persistence.projection.OrderSummary;
 import com.platzi.platzipizzeria.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
@@ -35,5 +36,10 @@ public class OrderController {
     @GetMapping("/customer/{id}")
     public ResponseEntity<List<OrderEntity>> getOutsideOrders(@PathVariable String id) {
         return ResponseEntity.ok(this.orderService.getCustomerOrders(id));
+    }
+
+    @GetMapping("/summary/{id}")
+    public ResponseEntity<OrderSummary> getSummary(@PathVariable int id) {
+        return ResponseEntity.ok(this.orderService.getSummary(id));
     }
 }
