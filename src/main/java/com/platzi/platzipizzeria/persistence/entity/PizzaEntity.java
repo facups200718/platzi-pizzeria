@@ -1,16 +1,21 @@
+
 package com.platzi.platzipizzeria.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 
 @Entity
 @Table(name = "pizza")
 @Getter
 @Setter
 @NoArgsConstructor
-public class PizzaEntity {
+@EntityListeners(AuditingEntityListener.class)
+public class PizzaEntity extends AuditableEntity {
     @Id
     @Column(name = "id_pizza", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +38,14 @@ public class PizzaEntity {
 
     @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean available;
+
+    // Esto es para auditoría
+
+    /*@Column(name = "created_date")
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+    @Column(name = "modified_date")
+    @LastModifiedDate
+    private LocalDateTime modifiedDate;*/
 }
