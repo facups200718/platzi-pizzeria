@@ -16,6 +16,7 @@ public class SecurityConfig {
                 .permitAll();*/
 
         httpSecurity.authorizeHttpRequests()
+                .crsf().disable()
                 .anyRequest()
                 .authenticated() // Con estas dos ultimas estamos diciendo que TODA petición debe estar autenticada
                 .and()
