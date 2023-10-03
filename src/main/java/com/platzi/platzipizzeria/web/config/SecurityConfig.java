@@ -30,8 +30,13 @@ public class SecurityConfig {
                 // Cuando tenemos un solo asterísco estamos indicando que queremos que se permita hasta solo un nivel después del slash
                 // ---------------------------------------------------------------------------------------------------------------------
                 // .requestMatchers(HttpMethod.GET, "/api/**").permitAll()  Acá estamos diciendo que queremos TODO el arbol de slashes
-                .requestMatchers(HttpMethod.GET, "/api/pizzas/**").permitAll() // Acá estamos diciendo que permitimos todas las ramas hijas de pizza
-                .requestMatchers(HttpMethod.PUT).denyAll() // Acá decimos que no permitimos requests con verbos PUT. Esto devuelve un 403.
+                // ---------------------------------------------------------------------------------------------------------------------
+                // .requestMatchers(HttpMethod.GET, "/api/pizzas/**").permitAll()  Acá estamos diciendo que permitimos todas las ramas hijas de pizza
+                .requestMatchers(HttpMethod.GET, "/api/pizzas/**").hasAnyRole("ADMIN", "CUSTOMER")
+                .requestMatchers(HttpMethod.POST, "/api/pizzas/**").hasRole("ADMIN") // Ver metodo memoryUsers
+                // .requestMatchers(HttpMethod.PUT).denyAll()  Acá decimos que no permitimos requests con verbos PUT. Esto devuelve un 403.
+                .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
+                .requestMatchers("/api/orders/**").hasRole("ADMIN") // Para poder consumir los endpoints de orders, tenes que ser admin B-)
                 .anyRequest()
                 .authenticated() // Con estas dos ultimas estamos diciendo que TODA petición debe estar autenticada
                 .and()
@@ -47,7 +52,12 @@ public class SecurityConfig {
                 .password(passwordEncoder().encode("admin"))
                 .roles("ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(admin);
+        UserDetails customer = User.builder()
+                .username("customer")
+                .password(passwordEncoder().encode("customer123"))
+                .roles("CUSTOMER")
+                .build();
+        return new InMemoryUserDetailsManager(admin, customer);
     }
 
     @Bean
