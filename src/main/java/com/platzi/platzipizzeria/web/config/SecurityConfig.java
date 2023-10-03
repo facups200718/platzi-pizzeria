@@ -17,6 +17,7 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests()
                 .crsf().disable()
+                .cors().and()
                 .anyRequest()
                 .authenticated() // Con estas dos ultimas estamos diciendo que TODA petición debe estar autenticada
                 .and()
